@@ -1,0 +1,24 @@
+{%if conectado == true%}
+<form hx-get="/home" hx-trigger="submit">
+    <button type="submit">Ir para posição Home</button>
+</form>
+<p hx-get="/posicao_atual" hx-trigger="from:#conectado">Posição atual: </p>
+</div>
+<form hx-post="/mover_distancia" hx-trigger="submit" hx-target="#resultado" hx-on::after-request="this.reset()">
+    <form.item>
+        <label for="x-axis">Distância no eixo X:</label><input type="number" id="x" name="x" required>
+    </form.item>
+    <form.item>
+        <label for="y-axis">Distância no eixo Y:</label><input type="number" id="y" name="y" required>
+    </form.item>
+    <form.item>
+        <label for="z-axis">Distância no eixo Z:</label><input type="number" id="z" name="z" required>
+    </form.item>
+    <form.item>
+        <label for="z-axis">Distância no eixo R:</label><input type="number" id="r" name="r" required>
+    </form.item>
+        <button id="botao-mover" type="submit">Mover Robô</button>
+</form>
+{%else%}
+<p><em>Conecte-se ao robô para poder movê-lo</em></p>
+{%endif%}

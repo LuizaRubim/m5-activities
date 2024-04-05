@@ -10,7 +10,7 @@ app = Flask(__name__)
 app.config["TEMPLATES_AUTO_RELOAD"] = True
 # Banco em memória
 banco = TinyDB('logs.json')
-
+conectado = False
 robo=DobotMoves()
 # Rota de teste
 @app.route('/')
@@ -26,9 +26,12 @@ def ola():
 # rota para connectar com o robô
 @app.route('/conectar')
 def connect():
+    global conectado
     print(list_ports.comports())
     port = list_ports.comports()[0].device
     robo.conectar(port)
+    conectado=True
+    robot_move()
     banco.insert({
     "endereco":str(request.environ['REMOTE_ADDR']),
     "acao": "conectar robô",
@@ -40,7 +43,10 @@ def connect():
 # Rota para desconectar
 @app.route('/desconectar')
 def disconnect():
+    global conectado
     robo.desconectar()
+    conectado=False
+    robot_move()
     banco.insert({
     "endereco":str(request.environ['REMOTE_ADDR']),
     "acao": "desconectar robô",
@@ -51,6 +57,9 @@ def disconnect():
 # Rota para mover para a posição inicial
 @app.route('/home')
 def home():
+    global conectado
+    if not conectado:
+        return 'Robô não conectado'
     robo.home()
     banco.insert({
     "endereco":str(request.environ['REMOTE_ADDR']),
@@ -63,6 +72,8 @@ def home():
 
 @app.route("/posicao_atual")
 def posicao_atual():
+    if not conectado:
+        return 'Robô não conectado'
     posicao_atual = robo.device.pose()
     banco.insert({
     "endereco":str(request.environ['REMOTE_ADDR']),
@@ -75,6 +86,9 @@ def posicao_atual():
 
 @app.route('/mover_distancia', methods=['POST'])
 def mover_distancia():
+    global conectado
+    if not conectado:
+        return 'Robô não conectado'
     x = request.form['x']
     y = request.form['y']
     z = request.form['z']
@@ -95,6 +109,9 @@ def mover_distancia():
 
 @app.route('/mover_para_ponto', methods=['POST'])
 def mover_para_ponto():
+    global conectado
+    if not conectado:
+        return 'Robô não conectado'
     x = request.form['x']
     y = request.form['y']
     z = request.form['z']
@@ -121,5 +138,10 @@ def retorna_acessos():
 def conexao():
     return render_template('connect-button.html')
 
-if __name__ == '__main__':
+@app.route('/robot-move')
+def robot_move():
+    global conectado
+    return render_template('robot-move.html')
+
+if __name__ == '__main  __':
     app.run(host='0.0.0.0', port=8000)
