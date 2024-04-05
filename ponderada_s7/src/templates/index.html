@@ -14,13 +14,13 @@
         <h2 class="navlist"> Robô Controlado por HTMX</h2>
         <a class="navlist" href="/logs">Logs</a>
     </div>
-        <div class="navlist" hx-get="/conexao" hx-trigger="load"></div>
+        <div id="botao-conexao" hx-get="/conexao" hx-trigger="every 200ms swap"></div>
     </nav>
     </header>
     <div id="conteudo">
     <h1>Controle do Robô</h1>
 
-    <div id="opcoes" hx-get="/robot-move" hx-trigger="load"></div>
+    <div id="opcoes" hx-get="/robot-move" hx-trigger="change from:#botao-conexao, load"></div>
     
     <div id="resultado"></div>
 

@@ -15,13 +15,14 @@ robo=DobotMoves()
 # Rota de teste
 @app.route('/')
 def ola():
+    
     banco.insert({
     "endereco":str(request.environ['REMOTE_ADDR']),
     "metodo": str(request.method),
     "hora":str(datetime.now()),
     "acao": "acessou a pagina inicial",
     })
-    return render_template('index.html')
+    return render_template('index.html', conectado=conectado)
 
 # rota para connectar com o robô
 @app.route('/conectar')
@@ -38,7 +39,7 @@ def connect():
     "hora":str(datetime.now()),
     })
     
-    return 'Conectado com sucesso'
+    return render_template('index.html')
 
 # Rota para desconectar
 @app.route('/desconectar')
@@ -136,12 +137,12 @@ def retorna_acessos():
 
 @app.route('/conexao')
 def conexao():
-    return render_template('connect-button.html')
+    return render_template('connect-button.html', conectado=conectado)
 
 @app.route('/robot-move')
 def robot_move():
     global conectado
-    return render_template('robot-move.html')
+    return render_template('robot-move.html', conectado=conectado)
 
 if __name__ == '__main  __':
     app.run(host='0.0.0.0', port=8000)
