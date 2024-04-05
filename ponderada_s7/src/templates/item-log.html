@@ -1,0 +1,15 @@
+{% for item in itens%}
+{%if item['acao'] == "mover para ponto"%}
+<li>
+    {{item['hora']}} - {{item['endereco']}} - {{item['acao']}} - posição: {{item['posição atual']}}
+</li>
+{%elif item['acao'] == "mover_distancia"%}
+<li>
+    {{item['hora']}} - {{item['endereco']}} - {{item['acao']}} - posição: {{item['posição atual']}}, x: {{item['x']}}, y: {{item['y']}}, z: {{item['z']}}, r: {{item['r']}}
+</li>
+{%else%}
+<li>
+    {{item['hora']}} - {{item['endereco']}} - {{item['metodo']}} - {{item['acao']}}    
+</li>
+{%endif%}
+{%endfor%}

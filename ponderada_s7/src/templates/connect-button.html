@@ -1,0 +1,8 @@
+{% set connect = false %}
+{% if connect == false %}
+<button hx-get="/conectar" hx-trigger="click">Conectar com o robô</button>
+{% set connect = true %}
+{% else %}
+<button hx-get="/desconectar" hx-trigger="click">Desconectar com o robô</button>
+{% set connect = false %}
+{% endif %}

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Logs do sistema</title>
+    <script src="https://unpkg.com/htmx.org@1.9.11"></script>
+    <link rel="stylesheet" href="../static/styles/logs-styles.css">
+</head>
+<body>
+    <header>
+        <nav>
+                <h2 class="navlist"> Logs do sistema</h2>
+                <a href="/">Voltar para o controle do robô</a>
+        </nav>
+    </header>
+    <div id="log-container">
+        <ul class="guarda-log" hx-get="/atualiza-logs" hx-trigger="load"></ul>
+    </div>
+</body>
+</html>
